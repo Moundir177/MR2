@@ -1,0 +1,48 @@
+{
+  "site": {
+    "name": "MIRA ACADEMY",
+    "description": "Professional Training School in Algeria"
+  },
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register"
+  },
+  "hero": {
+    "title": "Welcome to MIRA ACADEMY",
+    "subtitle": "Your partner for academic and professional excellence",
+    "cta": "Discover our courses"
+  },
+  "courses": {
+    "title": "Our Courses",
+    "viewAll": "View all courses",
+    "enrollNow": "Enroll now"
+  },
+  "features": {
+    "title": "Why Choose MIRA ACADEMY",
+    "quality": {
+      "title": "Quality Education",
+      "description": "Courses developed by experts in their field"
+    },
+    "certified": {
+      "title": "Recognized Certification",
+      "description": "Get nationally recognized certifications"
+    },
+    "flexible": {
+      "title": "Flexible Learning",
+      "description": "Learn at your own pace, wherever you are"
+    }
+  },
+  "testimonials": {
+    "title": "What Our Students Say",
+    "viewAll": "View all testimonials"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "policy": "Privacy Policy",
+    "terms": "Terms of Use"
+  }
+} 

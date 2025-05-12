@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
+  --primary-color: 79, 70, 229; /* Indigo-600 */
+  --primary-light-color: 129, 140, 248; /* Indigo-400 */
+  --primary-dark-color: 55, 48, 163; /* Indigo-800 */
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply antialiased;
+  }
+  
+  .font-arabic {
+    font-family: var(--font-amiri), serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 text-white py-2 px-6 rounded-md shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-primary-600 border border-primary-600 py-2 px-6 rounded-md shadow-md hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200;
+  }
+  
+  .section-title {
+    @apply text-3xl font-bold text-neutral-900 sm:text-4xl;
+  }
+  
+  .section-subtitle {
+    @apply mt-4 text-lg text-neutral-600 max-w-3xl mx-auto;
+  }
+}

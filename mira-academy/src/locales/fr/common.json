@@ -1,0 +1,48 @@
+{
+  "site": {
+    "name": "MIRA ACADEMY",
+    "description": "École de formation professionnelle en Algérie"
+  },
+  "nav": {
+    "home": "Accueil",
+    "courses": "Cours",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "register": "Inscription"
+  },
+  "hero": {
+    "title": "Bienvenue à MIRA ACADEMY",
+    "subtitle": "Votre partenaire pour l'excellence académique et professionnelle",
+    "cta": "Découvrir nos cours"
+  },
+  "courses": {
+    "title": "Nos Cours",
+    "viewAll": "Voir tous les cours",
+    "enrollNow": "S'inscrire maintenant"
+  },
+  "features": {
+    "title": "Pourquoi Choisir MIRA ACADEMY",
+    "quality": {
+      "title": "Éducation de qualité",
+      "description": "Des cours développés par des experts dans leur domaine"
+    },
+    "certified": {
+      "title": "Certification reconnue",
+      "description": "Obtenez des certifications reconnues nationalement"
+    },
+    "flexible": {
+      "title": "Apprentissage flexible",
+      "description": "Apprenez à votre rythme, où que vous soyez"
+    }
+  },
+  "testimonials": {
+    "title": "Ce que disent nos étudiants",
+    "viewAll": "Voir tous les témoignages"
+  },
+  "footer": {
+    "rights": "Tous droits réservés",
+    "policy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation"
+  }
+} 
