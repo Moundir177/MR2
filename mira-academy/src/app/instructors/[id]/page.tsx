@@ -1,40 +1,8 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { Metadata } from 'next';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import SEOMetadata from '../../../components/SEOMetadata';
-
-interface Instructor {
-  id: number;
-  name: string;
-  role: string;
-  bio: string;
-  avatar: string;
-  expertise: string[];
-  courses: {
-    id: number;
-    title: string;
-    description?: string;
-    image?: string;
-  }[];
-  education?: string[];
-  socialLinks?: {
-    platform: 'linkedin' | 'twitter' | 'github' | 'website';
-    url: string;
-  }[];
-  featured?: boolean;
-  testimonials?: {
-    text: string;
-    author: string;
-    course: string;
-  }[];
-  achievements?: string[];
-}
 
 // Sample instructors data (in a real app, this would come from an API)
-const instructorsData: Instructor[] = [
+const instructorsData = [
   {
     id: 1,
     name: "Dr. Sarah Johnson",
@@ -181,300 +149,140 @@ const instructorsData: Instructor[] = [
   }
 ];
 
-export default function InstructorDetail() {
-  const { id } = useParams();
-  const [instructor, setInstructor] = useState<Instructor | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'courses' | 'testimonials' | 'about'>('about');
+// Generate static paths for all instructors
+export async function generateStaticParams() {
+  return instructorsData.map((instructor) => ({
+    id: instructor.id.toString()
+  }));
+}
 
-  useEffect(() => {
-    // Simulate API fetch
-    const fetchInstructor = () => {
-      setTimeout(() => {
-        const foundInstructor = instructorsData.find(i => i.id === Number(id));
-        setInstructor(foundInstructor || null);
-        setIsLoading(false);
-      }, 500);
+// Generate metadata for SEO
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { id: string } 
+}): Promise<Metadata> {
+  const instructor = instructorsData.find(i => i.id === parseInt(params.id));
+  
+  if (!instructor) {
+    return {
+      title: 'Instructor Not Found',
     };
-
-    fetchInstructor();
-  }, [id]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
   }
+  
+  return {
+    title: `${instructor.name} - ${instructor.role}`,
+    description: instructor.bio,
+  };
+}
+
+// Static page component
+export default function InstructorDetail({ params }: { params: { id: string } }) {
+  const { id } = params;
+  const instructor = instructorsData.find(i => i.id === parseInt(id));
 
   if (!instructor) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Instructor Not Found</h1>
-        <p className="text-gray-600 mb-6">The instructor you're looking for doesn't exist or has been removed.</p>
-        <Link
-          href="/instructors"
-          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Browse All Instructors
+      <div className="container mx-auto px-4 py-16">
+        <h1 className="text-3xl font-bold">Instructor Not Found</h1>
+        <p className="mt-4">Sorry, the instructor you're looking for doesn't exist.</p>
+        <Link href="/instructors" className="mt-8 inline-block text-blue-600 hover:underline">
+          View all instructors
         </Link>
       </div>
     );
   }
 
   return (
-    <>
-      <SEOMetadata 
-        title={`${instructor.name} - Instructor Profile`}
-        description={`Learn about ${instructor.name}, ${instructor.role} at Mira Academy. Explore their expertise, courses, and achievements.`}
-      />
-      
-      <div className="min-h-screen bg-gray-50 py-16">
-        <div className="container mx-auto px-4">
-          <Link
-            href="/instructors"
-            className="inline-flex items-center text-blue-600 font-medium mb-8 hover:text-blue-800"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
-            </svg>
-            Back to Instructors
-          </Link>
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="bg-white rounded-xl shadow-lg overflow-hidden sticky top-6"
-              >
-                <div className="p-6 flex flex-col items-center">
-                  <div className="w-40 h-40 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-                    <span className="text-7xl">{instructor.avatar}</span>
-                  </div>
-                  
-                  <h1 className="text-2xl font-bold text-gray-900 text-center mb-1">{instructor.name}</h1>
-                  <p className="text-blue-600 font-medium text-center mb-4">{instructor.role}</p>
-                  
-                  <div className="flex justify-center space-x-3 mb-6">
-                    {instructor.socialLinks?.map((link, index) => (
-                      <a
-                        key={index}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
-                      >
-                        {link.platform === 'linkedin' && 'in'}
-                        {link.platform === 'twitter' && 't'}
-                        {link.platform === 'github' && 'gh'}
-                        {link.platform === 'website' && 'www'}
-                      </a>
-                    ))}
-                  </div>
-                  
-                  <div className="w-full border-t border-gray-100 pt-6">
-                    <h2 className="text-sm uppercase font-semibold text-gray-600 tracking-wider mb-3">Areas of Expertise</h2>
-                    <div className="flex flex-wrap gap-2">
-                      {instructor.expertise.map((skill, index) => (
-                        <span key={index} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  {instructor.education && (
-                    <div className="w-full border-t border-gray-100 mt-6 pt-6">
-                      <h2 className="text-sm uppercase font-semibold text-gray-600 tracking-wider mb-3">Education</h2>
-                      <ul className="space-y-2">
-                        {instructor.education.map((edu, index) => (
-                          <li key={index} className="text-sm text-gray-700">
-                            {edu}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  
-                  <div className="w-full border-t border-gray-100 mt-6 pt-6">
-                    <Link
-                      href={`/contact?subject=Question for ${instructor.name}`}
-                      className="w-full py-2 px-4 bg-blue-600 text-white text-center rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      Contact Instructor
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
+    <div className="container mx-auto px-4 py-16">
+      <div className="max-w-4xl mx-auto">
+        <Link href="/instructors" className="text-blue-600 hover:underline mb-8 inline-block">
+          ← Back to all instructors
+        </Link>
+        
+        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-10">
+          <div className="md:flex">
+            <div className="md:flex-shrink-0 bg-blue-100 flex items-center justify-center text-7xl p-6">
+              {instructor.avatar}
             </div>
-            
-            {/* Main Content */}
-            <div className="lg:col-span-3">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="bg-white rounded-xl shadow-lg overflow-hidden mb-8"
-              >
-                <div className="border-b border-gray-100">
-                  <div className="flex">
-                    <button
-                      onClick={() => setActiveTab('about')}
-                      className={`flex-1 py-4 px-6 text-center font-medium ${
-                        activeTab === 'about' 
-                          ? 'text-blue-600 border-b-2 border-blue-600' 
-                          : 'text-gray-600 hover:text-blue-600'
-                      }`}
-                    >
-                      About
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('courses')}
-                      className={`flex-1 py-4 px-6 text-center font-medium ${
-                        activeTab === 'courses' 
-                          ? 'text-blue-600 border-b-2 border-blue-600' 
-                          : 'text-gray-600 hover:text-blue-600'
-                      }`}
-                    >
-                      Courses
-                    </button>
-                    {instructor.testimonials && instructor.testimonials.length > 0 && (
-                      <button
-                        onClick={() => setActiveTab('testimonials')}
-                        className={`flex-1 py-4 px-6 text-center font-medium ${
-                          activeTab === 'testimonials' 
-                            ? 'text-blue-600 border-b-2 border-blue-600' 
-                            : 'text-gray-600 hover:text-blue-600'
-                        }`}
-                      >
-                        Testimonials
-                      </button>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="p-8">
-                  {activeTab === 'about' && (
-                    <div>
-                      <h2 className="text-2xl font-bold text-gray-900 mb-6">About {instructor.name}</h2>
-                      <p className="text-gray-700 mb-8 leading-relaxed text-lg">
-                        {instructor.bio}
-                      </p>
-                      
-                      {instructor.achievements && (
-                        <div className="mb-8">
-                          <h3 className="text-xl font-bold text-gray-900 mb-4">Achievements</h3>
-                          <ul className="space-y-3">
-                            {instructor.achievements.map((achievement, index) => (
-                              <li key={index} className="flex items-start">
-                                <span className="text-blue-600 mr-3">✓</span>
-                                <span className="text-gray-700">{achievement}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  
-                  {activeTab === 'courses' && (
-                    <div>
-                      <h2 className="text-2xl font-bold text-gray-900 mb-6">Courses by {instructor.name}</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {instructor.courses.map((course, index) => (
-                          <Link key={index} href={`/courses/${course.id}`}>
-                            <div className="bg-gray-50 rounded-xl p-6 hover:bg-blue-50 transition-colors">
-                              <div className="flex items-center mb-4">
-                                <span className="text-4xl mr-4">{course.image || '📚'}</span>
-                                <h3 className="text-lg font-bold text-gray-900">{course.title}</h3>
-                              </div>
-                              {course.description && (
-                                <p className="text-gray-700">{course.description}</p>
-                              )}
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                      
-                      <div className="mt-8 text-center">
-                        <Link
-                          href="/courses"
-                          className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors inline-flex items-center"
-                        >
-                          Browse All Courses
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                          </svg>
-                        </Link>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {activeTab === 'testimonials' && instructor.testimonials && (
-                    <div>
-                      <h2 className="text-2xl font-bold text-gray-900 mb-6">Student Testimonials</h2>
-                      <div className="space-y-6">
-                        {instructor.testimonials.map((testimonial, index) => (
-                          <div key={index} className="bg-gray-50 rounded-xl p-6 border-l-4 border-blue-400">
-                            <p className="text-gray-700 italic mb-4">"{testimonial.text}"</p>
-                            <div className="flex justify-between items-center">
-                              <p className="font-medium text-gray-900">- {testimonial.author}</p>
-                              <span className="text-sm text-gray-500">Course: {testimonial.course}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+            <div className="p-8">
+              <h1 className="text-3xl font-bold text-gray-900">{instructor.name}</h1>
+              <p className="text-blue-600 font-medium mb-4">{instructor.role}</p>
+              <p className="text-gray-700 mb-6">{instructor.bio}</p>
               
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="bg-blue-50 rounded-xl shadow-lg overflow-hidden p-8"
-              >
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Instructor Feedback</h2>
-                <div className="flex items-center mb-6">
-                  <div className="flex items-center mr-4">
-                    <div className="flex">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <svg key={star} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
-                    <span className="ml-2 font-bold text-gray-900">4.9/5</span>
-                  </div>
-                  <span className="text-gray-600">Based on {Math.floor(Math.random() * 100) + 50} student ratings</span>
+              <div className="mb-6">
+                <h3 className="font-medium text-gray-900 mb-2">Areas of Expertise</h3>
+                <div className="flex flex-wrap gap-2">
+                  {instructor.expertise.map((skill, index) => (
+                    <span key={index} className="bg-gray-100 px-3 py-1 rounded-full text-sm">
+                      {skill}
+                    </span>
+                  ))}
                 </div>
-                <p className="text-gray-700 mb-6">
-                  Students consistently praise {instructor.name}'s teaching style, depth of knowledge, and ability to explain complex concepts in an accessible way.
-                </p>
-                <div className="flex justify-between">
-                  <Link
-                    href={`/courses?instructor=${instructor.id}`}
-                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Enroll in a Course
-                  </Link>
-                  <Link
-                    href={`/events?speaker=${instructor.name}`}
-                    className="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
-                  >
-                    Upcoming Events
-                  </Link>
+              </div>
+              
+              {instructor.education && (
+                <div>
+                  <h3 className="font-medium text-gray-900 mb-2">Education</h3>
+                  <ul className="list-disc pl-5 text-gray-700">
+                    {instructor.education.map((edu, index) => (
+                      <li key={index}>{edu}</li>
+                    ))}
+                  </ul>
                 </div>
-              </motion.div>
+              )}
             </div>
           </div>
         </div>
+        
+        <div className="mb-10">
+          <h2 className="text-2xl font-bold mb-6">Courses by {instructor.name}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {instructor.courses.map((course) => (
+              <div key={course.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+                <div className="h-40 bg-gray-100 flex items-center justify-center text-5xl">
+                  {course.image}
+                </div>
+                <div className="p-6">
+                  <h3 className="font-bold text-xl mb-2">{course.title}</h3>
+                  <p className="text-gray-700 mb-4">{course.description}</p>
+                  <Link href={`/courses/${course.id}`} className="text-blue-600 font-medium hover:underline">
+                    View course details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {instructor.testimonials && instructor.testimonials.length > 0 && (
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold mb-6">Student Testimonials</h2>
+            <div className="grid grid-cols-1 gap-6">
+              {instructor.testimonials.map((testimonial, index) => (
+                <div key={index} className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                  <p className="italic text-gray-700 mb-4">"{testimonial.text}"</p>
+                  <div>
+                    <p className="font-medium text-gray-900">{testimonial.author}</p>
+                    <p className="text-sm text-gray-600">Student, {testimonial.course}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {instructor.achievements && instructor.achievements.length > 0 && (
+          <div>
+            <h2 className="text-2xl font-bold mb-6">Achievements</h2>
+            <ul className="list-disc pl-5 text-gray-700 space-y-2">
+              {instructor.achievements.map((achievement, index) => (
+                <li key={index}>{achievement}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 } 
