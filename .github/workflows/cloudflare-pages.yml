@@ -9,9 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./mira-academy
     
     steps:
       - name: Checkout repository
@@ -25,10 +22,28 @@ jobs:
           cache-dependency-path: './mira-academy/package-lock.json'
 
       - name: Install dependencies
-        run: npm ci
+        working-directory: ./mira-academy
+        run: |
+          npm install
+          npm list next || echo "Next.js not found!"
+
+      - name: Create build script
+        working-directory: ./mira-academy
+        run: |
+          echo "const { execSync } = require('child_process');" > build.js
+          echo "console.log('Building Next.js site for static export...');" >> build.js
+          echo "try {" >> build.js
+          echo "  console.log('Running Next.js build...');" >> build.js
+          echo "  execSync('npx next build', { stdio: 'inherit' });" >> build.js
+          echo "  console.log('Build completed successfully!');" >> build.js
+          echo "} catch (error) {" >> build.js
+          echo "  console.error('Build failed:', error.message);" >> build.js
+          echo "  process.exit(1);" >> build.js
+          echo "}" >> build.js
 
       - name: Build site
-        run: npm run build
+        working-directory: ./mira-academy
+        run: node build.js
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
