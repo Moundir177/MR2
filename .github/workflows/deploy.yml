@@ -6,6 +6,11 @@ on:
       - master
   workflow_dispatch:
 
+# Add required permissions for GitHub deployments
+permissions:
+  contents: read
+  deployments: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -41,11 +46,13 @@ jobs:
           mv next.config.mjs.temp next.config.mjs
           NODE_ENV=production npx next build
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: mira-academy
-          directory: ./mira-academy/out
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }} 
+      # Use wrangler direct deployment instead of Pages GitHub integration
+      - name: Install Wrangler
+        run: npm install -g wrangler@3
+
+      - name: Deploy with Wrangler
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          wrangler pages deploy ./mira-academy/out --project-name=mira-academy --branch=production 
