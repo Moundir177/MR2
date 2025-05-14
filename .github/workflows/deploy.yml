@@ -21,11 +21,25 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./mira-academy
-        run: npm install
+        run: |
+          npm install
+          npm install --save-dev typescript @types/node @types/react @types/react-dom
+
+      - name: Check TypeScript setup
+        working-directory: ./mira-academy
+        run: |
+          echo "Checking TypeScript setup..."
+          npx tsc --version
+          ls -la tsconfig.json || echo "tsconfig.json not found"
+          ls -la next-env.d.ts || echo "next-env.d.ts not found"
 
       - name: Build Next.js site
         working-directory: ./mira-academy
-        run: npx next build
+        run: |
+          echo "export const config = { output: 'export' };" > next.config.mjs.temp
+          cat next.config.mjs >> next.config.mjs.temp
+          mv next.config.mjs.temp next.config.mjs
+          NODE_ENV=production npx next build
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
