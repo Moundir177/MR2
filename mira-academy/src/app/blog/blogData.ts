@@ -1,286 +1,134 @@
-export type BlogPost = {
-  id: string;
+export interface BlogPost {
+  id: number;
   title: {
+    en: string;
     fr: string;
     ar: string;
+  };
+  author: string;
+  authorId: string;
+  date: string;
+  category: {
     en: string;
+    fr: string;
+    ar: string;
   };
   excerpt: {
+    en: string;
     fr: string;
     ar: string;
-    en: string;
   };
-  content: {
+  content?: {
+    en: string;
     fr: string;
     ar: string;
-    en: string;
   };
-  author: {
-    name: string;
-    title: {
-      fr: string;
-      ar: string;
-      en: string;
-    };
-    avatar: string;
-  };
-  category: {
-    fr: string;
-    ar: string;
-    en: string;
-  };
-  date: string;
-  image: string;
-  readTime: {
-    fr: string;
-    ar: string;
-    en: string;
-  };
-  tags?: string[];
-  featured?: boolean;
-};
+}
 
 export const blogPosts: BlogPost[] = [
   {
-    id: 'effective-learning-techniques',
+    id: 1,
     title: {
-      fr: 'Techniques d\'apprentissage efficaces pour les étudiants',
-      ar: 'تقنيات تعلم فعالة للطلاب',
-      en: 'Effective learning techniques for students',
+      en: "Getting Started with Web Development",
+      fr: "Débuter avec le développement web",
+      ar: "بدء العمل في تطوير الويب"
+    },
+    author: "John Doe",
+    authorId: "john-doe",
+    date: "2023-01-15",
+    category: {
+      en: "Web Development",
+      fr: "Développement Web",
+      ar: "تطوير الويب"
     },
     excerpt: {
-      fr: 'Découvrez des méthodes d\'apprentissage efficaces pour améliorer votre rétention et compréhension.',
-      ar: 'اكتشف طرق تعلم فعالة لتحسين الاحتفاظ بالمعلومات والفهم.',
-      en: 'Discover effective learning methods to improve your retention and understanding.',
-    },
-    content: {
-      fr: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-      ar: 'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص.',
-      en: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    },
-    author: {
-      name: 'Dr. Sarah Leblanc',
-      title: {
-        fr: 'Spécialiste en pédagogie',
-        ar: 'متخصصة في التربية',
-        en: 'Educational Specialist',
-      },
-      avatar: '/authors/sarah.jpg',
-    },
-    category: {
-      fr: 'Éducation',
-      ar: 'تعليم',
-      en: 'Education',
-    },
-    date: '2023-05-15',
-    image: '/blog/learning-techniques.jpg',
-    readTime: {
-      fr: '5 min de lecture',
-      ar: '5 دقائق قراءة',
-      en: '5 min read',
-    },
-    tags: ['learning', 'education', 'students'],
-    featured: true
+      en: "Learn the fundamentals of web development, including HTML, CSS, and JavaScript to build your first website.",
+      fr: "Apprenez les fondamentaux du développement web, y compris HTML, CSS et JavaScript pour créer votre premier site web.",
+      ar: "تعلم أساسيات تطوير الويب، بما في ذلك HTML و CSS و JavaScript لبناء موقع الويب الأول الخاص بك."
+    }
   },
   {
-    id: 'digital-transformation-education',
+    id: 2,
     title: {
-      fr: 'La transformation numérique dans l\'éducation',
-      ar: 'التحول الرقمي في التعليم',
-      en: 'Digital transformation in education',
+      en: "Data Science for Beginners",
+      fr: "Science des données pour débutants",
+      ar: "علوم البيانات للمبتدئين"
+    },
+    author: "Jane Smith",
+    authorId: "jane-smith",
+    date: "2023-02-10",
+    category: {
+      en: "Data Science",
+      fr: "Science des Données",
+      ar: "علوم البيانات"
     },
     excerpt: {
-      fr: 'Comment la technologie change le paysage éducatif en Algérie et dans le monde.',
-      ar: 'كيف تغير التكنولوجيا المشهد التعليمي في الجزائر والعالم.',
-      en: 'How technology is changing the educational landscape in Algeria and worldwide.',
-    },
-    content: {
-      fr: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-      ar: 'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص.',
-      en: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    },
-    author: {
-      name: 'Mohammed Kaddour',
-      title: {
-        fr: 'Expert en technologie éducative',
-        ar: 'خبير في تكنولوجيا التعليم',
-        en: 'Educational Technology Expert',
-      },
-      avatar: '/authors/mohammed.jpg',
-    },
-    category: {
-      fr: 'Technologie',
-      ar: 'تكنولوجيا',
-      en: 'Technology',
-    },
-    date: '2023-06-22',
-    image: '/blog/digital-education.jpg',
-    readTime: {
-      fr: '8 min de lecture',
-      ar: '8 دقائق قراءة',
-      en: '8 min read',
-    },
-    tags: ['technology', 'education', 'digital']
+      en: "Discover the world of data science and learn how to analyze and visualize data to derive meaningful insights.",
+      fr: "Découvrez le monde de la science des données et apprenez à analyser et à visualiser les données pour en tirer des informations utiles.",
+      ar: "اكتشف عالم علوم البيانات وتعلم كيفية تحليل البيانات وتصورها لاستخلاص رؤى مفيدة."
+    }
   },
   {
-    id: 'language-learning-benefits',
+    id: 3,
     title: {
-      fr: 'Les avantages du multilinguisme dans la carrière professionnelle',
-      ar: 'فوائد تعدد اللغات في المسار المهني',
-      en: 'Benefits of multilingualism in professional careers',
+      en: "Digital Marketing Essentials",
+      fr: "Les fondamentaux du marketing digital",
+      ar: "أساسيات التسويق الرقمي"
+    },
+    author: "Ahmed Ibrahim",
+    authorId: "ahmed-ibrahim",
+    date: "2023-03-05",
+    category: {
+      en: "Digital Marketing",
+      fr: "Marketing Digital",
+      ar: "التسويق الرقمي"
     },
     excerpt: {
-      fr: 'Pourquoi apprendre plusieurs langues peut booster votre carrière et ouvrir de nouvelles opportunités.',
-      ar: 'لماذا يمكن لتعلم لغات متعددة أن يعزز حياتك المهنية ويفتح فرصاً جديدة.',
-      en: 'Why learning multiple languages can boost your career and open new opportunities.',
-    },
-    content: {
-      fr: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-      ar: 'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص.',
-      en: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    },
-    author: {
-      name: 'Leila Bouzidi',
-      title: {
-        fr: 'Directrice des Langues',
-        ar: 'مديرة اللغات',
-        en: 'Languages Director',
-      },
-      avatar: '/authors/leila.jpg',
-    },
-    category: {
-      fr: 'Langues',
-      ar: 'لغات',
-      en: 'Languages',
-    },
-    date: '2023-07-10',
-    image: '/blog/language-learning.jpg',
-    readTime: {
-      fr: '6 min de lecture',
-      ar: '6 دقائق قراءة',
-      en: '6 min read',
-    },
-    tags: ['languages', 'career', 'professional development']
+      en: "Master the essential strategies and tools for effective digital marketing campaigns in today's competitive market.",
+      fr: "Maîtrisez les stratégies et les outils essentiels pour des campagnes de marketing digital efficaces sur le marché concurrentiel d'aujourd'hui.",
+      ar: "أتقن الاستراتيجيات والأدوات الأساسية لحملات التسويق الرقمي الفعالة في سوق اليوم التنافسي."
+    }
   },
   {
-    id: 'job-market-skills',
+    id: 4,
     title: {
-      fr: 'Les compétences les plus demandées sur le marché du travail en 2023',
-      ar: 'المهارات الأكثر طلباً في سوق العمل في 2023',
-      en: 'Most in-demand skills in the job market in 2023',
+      en: "Mobile App Development with React Native",
+      fr: "Développement d'applications mobiles avec React Native",
+      ar: "تطوير تطبيقات الجوال باستخدام React Native"
+    },
+    author: "Maria Garcia",
+    authorId: "maria-garcia",
+    date: "2023-04-20",
+    category: {
+      en: "Mobile Development",
+      fr: "Développement Mobile",
+      ar: "تطوير الجوال"
     },
     excerpt: {
-      fr: 'Analyse des tendances du marché du travail et des compétences recherchées par les employeurs.',
-      ar: 'تحليل اتجاهات سوق العمل والمهارات التي يبحث عنها أصحاب العمل.',
-      en: 'Analysis of job market trends and skills sought by employers.',
-    },
-    content: {
-      fr: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-      ar: 'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص.',
-      en: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    },
-    author: {
-      name: 'Karim Mansouri',
-      title: {
-        fr: 'Directeur des Programmes Tech',
-        ar: 'مدير برامج التكنولوجيا',
-        en: 'Tech Programs Director',
-      },
-      avatar: '/authors/karim.jpg',
-    },
-    category: {
-      fr: 'Carrière',
-      ar: 'مهنة',
-      en: 'Career',
-    },
-    date: '2023-08-05',
-    image: '/blog/job-market.jpg',
-    readTime: {
-      fr: '7 min de lecture',
-      ar: '7 دقائق قراءة',
-      en: '7 min read',
-    },
-    tags: ['career', 'job market', 'skills']
+      en: "Build cross-platform mobile applications using React Native and JavaScript for both iOS and Android platforms.",
+      fr: "Créez des applications mobiles multiplateformes à l'aide de React Native et JavaScript pour les plateformes iOS et Android.",
+      ar: "بناء تطبيقات الهاتف المحمول عبر المنصات باستخدام React Native و JavaScript لمنصات iOS و Android."
+    }
   },
   {
-    id: 'student-success-stories',
+    id: 5,
     title: {
-      fr: 'Histoires de réussite d\'étudiants de MIRA ACADEMY',
-      ar: 'قصص نجاح طلاب أكاديمية ميرا',
-      en: 'MIRA ACADEMY student success stories',
+      en: "Introduction to Artificial Intelligence",
+      fr: "Introduction à l'intelligence artificielle",
+      ar: "مقدمة في الذكاء الاصطناعي"
+    },
+    author: "Alex Chen",
+    authorId: "alex-chen",
+    date: "2023-05-15",
+    category: {
+      en: "Artificial Intelligence",
+      fr: "Intelligence Artificielle",
+      ar: "الذكاء الاصطناعي"
     },
     excerpt: {
-      fr: 'Découvrez comment nos anciens étudiants ont réussi à atteindre leurs objectifs professionnels après leur formation.',
-      ar: 'اكتشف كيف نجح طلابنا السابقون في تحقيق أهدافهم المهنية بعد تدريبهم.',
-      en: 'Discover how our alumni succeeded in reaching their professional goals after their training.',
-    },
-    content: {
-      fr: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-      ar: 'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص.',
-      en: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    },
-    author: {
-      name: 'Amina Benali',
-      title: {
-        fr: 'Responsable des anciens élèves',
-        ar: 'مسؤولة الخريجين',
-        en: 'Alumni Manager',
-      },
-      avatar: '/authors/amina.jpg',
-    },
-    category: {
-      fr: 'Témoignages',
-      ar: 'شهادات',
-      en: 'Testimonials',
-    },
-    date: '2023-09-12',
-    image: '/blog/success-stories.jpg',
-    readTime: {
-      fr: '10 min de lecture',
-      ar: '10 دقائق قراءة',
-      en: '10 min read',
-    },
-    tags: ['success stories', 'testimonials', 'alumni']
-  },
-  {
-    id: 'online-learning-tips',
-    title: {
-      fr: 'Conseils pour réussir votre apprentissage en ligne',
-      ar: 'نصائح للنجاح في التعلم عبر الإنترنت',
-      en: 'Tips for successful online learning',
-    },
-    excerpt: {
-      fr: 'Maximisez votre expérience d\'apprentissage en ligne avec ces conseils pratiques et stratégies efficaces.',
-      ar: 'عزز تجربة التعلم عبر الإنترنت الخاصة بك مع هذه النصائح العملية والاستراتيجيات الفعالة.',
-      en: 'Maximize your online learning experience with these practical tips and effective strategies.',
-    },
-    content: {
-      fr: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-      ar: 'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص.',
-      en: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.',
-    },
-    author: {
-      name: 'Youssef Hamid',
-      title: {
-        fr: 'Spécialiste de l\'apprentissage en ligne',
-        ar: 'أخصائي التعلم عبر الإنترنت',
-        en: 'E-Learning Specialist',
-      },
-      avatar: '/authors/youssef.jpg',
-    },
-    category: {
-      fr: 'Apprentissage en ligne',
-      ar: 'التعلم عبر الإنترنت',
-      en: 'Online Learning',
-    },
-    date: '2023-10-05',
-    image: '/blog/online-learning.jpg',
-    readTime: {
-      fr: '8 min de lecture',
-      ar: '8 دقائق قراءة',
-      en: '8 min read',
-    },
-    tags: ['online learning', 'e-learning', 'study tips'],
-    featured: true
+      en: "Explore the fundamentals of AI, including machine learning, neural networks, and their applications in various industries.",
+      fr: "Explorez les fondamentaux de l'IA, y compris l'apprentissage automatique, les réseaux de neurones et leurs applications dans diverses industries.",
+      ar: "استكشف أساسيات الذكاء الاصطناعي، بما في ذلك التعلم الآلي والشبكات العصبية وتطبيقاتها في مختلف الصناعات."
+    }
   }
 ]; 

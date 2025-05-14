@@ -5,6 +5,15 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
+// Generate static paths for all projects
+export async function generateStaticParams() {
+  // In a real application, this would fetch from an API
+  return [
+    { id: '1' },
+    { id: '2' }
+  ];
+}
+
 interface Project {
   id: number;
   title: string;
