@@ -1,9 +1,4 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 
 // Generate static paths for all projects
 export async function generateStaticParams() {
@@ -73,31 +68,9 @@ const projects: Project[] = [
   }
 ];
 
-export default function ProjectDetailPage() {
-  const { id } = useParams();
-  const [project, setProject] = useState<Project | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate API fetch
-    const fetchProject = () => {
-      setTimeout(() => {
-        const foundProject = projects.find(p => p.id === Number(id));
-        setProject(foundProject || null);
-        setIsLoading(false);
-      }, 500);
-    };
-
-    fetchProject();
-  }, [id]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
+export default function ProjectDetailPage({ params }: { params: { id: string } }) {
+  const projectId = parseInt(params.id);
+  const project = projects.find(p => p.id === projectId);
 
   if (!project) {
     return (
@@ -130,30 +103,15 @@ export default function ProjectDetailPage() {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-10">
           <div className="p-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-3xl md:text-4xl font-bold text-gray-900"
-              >
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                 {project.title}
-              </motion.h1>
-              <motion.span
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="mt-2 md:mt-0 px-4 py-2 bg-blue-100 text-blue-800 text-sm rounded-full"
-              >
+              </h1>
+              <span className="mt-2 md:mt-0 px-4 py-2 bg-blue-100 text-blue-800 text-sm rounded-full">
                 {project.category}
-              </motion.span>
+              </span>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-8 text-gray-600"
-            >
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-8 text-gray-600">
               <div className="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -167,15 +125,10 @@ export default function ProjectDetailPage() {
                 </svg>
                 <span>Course: <strong className="text-gray-900">{project.course}</strong></span>
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="flex overflow-x-auto py-8 px-8 gap-6 bg-gray-50"
-          >
+          <div className="flex overflow-x-auto py-8 px-8 gap-6 bg-gray-50">
             {project.projectImages?.map((image, index) => (
               <div 
                 key={index}
@@ -184,17 +137,12 @@ export default function ProjectDetailPage() {
                 <span className="text-7xl">{image}</span>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden mb-8"
-            >
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
               <div className="p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Project Overview</h2>
                 <p className="text-gray-700 mb-6 leading-relaxed">
@@ -213,15 +161,10 @@ export default function ProjectDetailPage() {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {project.timeline && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="bg-white rounded-xl shadow-lg overflow-hidden"
-              >
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div className="p-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Project Timeline</h2>
                   <div className="space-y-6">
@@ -237,17 +180,12 @@ export default function ProjectDetailPage() {
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
 
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden mb-8"
-            >
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
               <div className="p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">About the Student</h2>
                 <div className="flex items-center justify-center mb-6">
@@ -261,14 +199,9 @@ export default function ProjectDetailPage() {
                   {project.studentBio || "A dedicated student passionate about applying their skills to create innovative solutions."}
                 </p>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden"
-            >
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
               <div className="p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Interested in Similar Projects?</h2>
                 <p className="text-gray-700 mb-6">
@@ -281,7 +214,7 @@ export default function ProjectDetailPage() {
                   Browse Courses
                 </Link>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
